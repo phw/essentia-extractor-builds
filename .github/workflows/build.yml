@@ -18,14 +18,19 @@ jobs:
       - name: Install dependencies
         run: |
           sudo apt-get update
-          sudo apt-get install libeigen3-dev libtaglib-cil-dev libavcodec-dev \
-            libavformat-dev libavutil-dev libavresample-dev libsamplerate0-dev \
-            libyaml-dev libchromaprint-dev libfftw3-dev
+          sudo apt-get install yasm
+
+      - name: Clone essentia repository
+        run: |
+          git clone --depth=1 --branch=v2.1_beta2 https://github.com/MTG/essentia.git
+
+      - name: Build and install dependencies
+        run: |
+          cd essentia
+          ./packaging/build_3rdparty_static_debian.sh
 
       - name: Build streaming_extractor_music
         run: |
-          git clone --depth=1 https://github.com/MTG/essentia.git
           cd essentia
-          chmod +x ./waf
-          ./waf configure --with-example=streaming_extractor_music
-          ./waf
+          python2 waf configure --with-example=streaming_extractor_music --with-static-examples
+          python2 waf
