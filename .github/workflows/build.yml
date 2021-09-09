@@ -39,3 +39,16 @@ jobs:
           cd essentia
           python2 waf configure --with-example=streaming_extractor_music --with-static-examples
           python2 waf
+
+      - name: Gather build artifacts
+        run: |
+          mkdir artifacts
+          cp essentia/AUTHORS artifacts/
+          cp essentia/COPYING.txt artifacts/
+          mv essentia/build/src/examples/streaming_extractor_music artifacts
+
+      - name: Archive production artifacts
+        uses: actions/upload-artifact@v1
+        with:
+          name: essentia-extractor-${{ runner.os }}
+          path: artifacts/
