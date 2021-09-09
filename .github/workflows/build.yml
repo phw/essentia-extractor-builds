@@ -10,12 +10,16 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [macos-latest, ubuntu-latest]
 
     steps:
       - uses: actions/checkout@v2
 
-      - name: Install dependencies
+      - name: Install system dependencies
+        if: runner.os == 'Linux'
         run: |
           sudo apt-get update
           sudo apt-get install yasm
@@ -29,7 +33,7 @@ jobs:
           cd essentia
           patch -p1 < ../patches/*.patch
 
-      - name: Build and install dependencies
+      - name: Build required libraries
         run: |
           cd essentia
           ./packaging/build_3rdparty_static_debian.sh
