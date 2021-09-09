@@ -13,7 +13,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    #  - uses: actions/checkout@v2
+      - uses: actions/checkout@v2
 
       - name: Install dependencies
         run: |
@@ -23,6 +23,11 @@ jobs:
       - name: Clone essentia repository
         run: |
           git clone --depth=1 --branch=v2.1_beta2 https://github.com/MTG/essentia.git
+
+      - name: Apply patches
+        run: |
+          cd essentia
+          patch -p1 < ../patches/*.patch
 
       - name: Build and install dependencies
         run: |

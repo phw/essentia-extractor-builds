@@ -1,0 +1,48 @@
+diff --git a/src/algorithms/rhythm/tempotapdegara.h b/src/algorithms/rhythm/tempotapdegara.h
+index b775dd14..61979495 100644
+--- a/src/algorithms/rhythm/tempotapdegara.h
++++ b/src/algorithms/rhythm/tempotapdegara.h
+@@ -65,7 +65,7 @@ class TempoTapDegara : public Algorithm {
+   // Davies' beat periods estimation:
+   int _smoothingWindowHalfSize;
+   static const int _numberCombs = 4;
+-  static const Real _frameDurationODF = 5.944308390022676;
++  static constexpr Real _frameDurationODF = 5.944308390022676;
+   Real _sampleRateODF;
+   int _hopSizeODF;
+   Real _hopDurationODF;
+@@ -92,8 +92,8 @@ class TempoTapDegara : public Algorithm {
+   void adaptiveThreshold(std::vector<Real>& array, int smoothingHalfSize);
+ 
+   // Degara's beat tracking from periods:
+-  static const Real _alpha = 0.5; // decoding weighting parameter
+-  static const Real _sigma_ibi = 0.025; // std of the inter-beat interval pdf,
++  static constexpr Real _alpha = 0.5; // decoding weighting parameter
++  static constexpr Real _sigma_ibi = 0.025; // std of the inter-beat interval pdf,
+                                        // models potential variations in the
+                                        // inter-beat interval in secs.
+   int _numberStates;    // number HMM states
+diff --git a/src/algorithms/rhythm/tempotapmaxagreement.h b/src/algorithms/rhythm/tempotapmaxagreement.h
+index 5711d946..5dbbc24d 100644
+--- a/src/algorithms/rhythm/tempotapmaxagreement.h
++++ b/src/algorithms/rhythm/tempotapmaxagreement.h
+@@ -53,7 +53,7 @@ class TempoTapMaxAgreement : public Algorithm {
+   static const char* description;
+ 
+  private:
+-  static const Real _minTickTime = 5.;  // ignore peaks before this time [s]
++  static constexpr Real _minTickTime = 5.;  // ignore peaks before this time [s]
+   static const int _numberBins = 40; // number of histogram bins for information gain method
+                                      // corresponds to Log2(40) = 5.32 maximum
+                                      // confidence value
+@@ -62,8 +62,8 @@ class TempoTapMaxAgreement : public Algorithm {
+   std::vector<Real> _binValues;
+ 
+   // parameters for the continuity-based method
+-  static const Real _phaseThreshold = 0.175; // size of tolerance window for beat phase
+-  static const Real _periodThreshold = 0.175; // size of tolerance window for beat period
++  static constexpr Real _phaseThreshold = 0.175; // size of tolerance window for beat phase
++  static constexpr Real _periodThreshold = 0.175; // size of tolerance window for beat period
+ 
+   Real computeBeatInfogain(std::vector<Real>& ticks1, std::vector<Real>& ticks2);
+ 
