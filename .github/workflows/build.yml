@@ -36,7 +36,11 @@ jobs:
       - name: Apply patches
         run: |
           cd essentia
-          patch -p1 < ../patches/*.patch
+          for p in ../patches/${PATCH_PREFIX}*.patch; do
+            patch -p1 < "$p"
+          done
+        env:
+          PATCH_PREFIX: ${{ runner.os }}-
 
       - name: Build required libraries
         run: |
