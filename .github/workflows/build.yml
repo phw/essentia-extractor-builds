@@ -18,11 +18,16 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
-      - name: Install system dependencies
+      - name: Install system dependencies (Linux)
         if: runner.os == 'Linux'
         run: |
           sudo apt-get update
           sudo apt-get install yasm
+
+      - name: Install system dependencies (macOS)
+        if: runner.os == 'macOS'
+        run: |
+          brew install yasm
 
       - name: Clone essentia repository
         run: |
