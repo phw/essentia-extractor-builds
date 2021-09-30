@@ -1,0 +1,47 @@
+diff --git a/src/essentia/utils/atomic.h b/src/essentia/utils/atomic.h
+index 3e7758d..89f74fc 100644
+--- a/src/essentia/utils/atomic.h
++++ b/src/essentia/utils/atomic.h
+@@ -68,7 +68,41 @@ class Atomic {
+ } // namespace essentia
+ 
+ 
+-#else 
++#elif defined(OS_MAC)
++
++#include <libkern/OSAtomic.h>
++namespace essentia {
++
++class Atomic {
++ private:
++  int32_t i_;
++
++ public:
++  inline Atomic(const int &i = 0) : i_(i) {}
++
++  inline operator int() const { return i_; }
++
++  inline void operator-=(const int &i) {
++    OSAtomicAdd32Barrier(-i, &i_);
++  }
++
++  inline void operator+=(const int &i) {
++    OSAtomicAdd32Barrier(i, &i_);
++  }
++
++  inline void operator++() {
++    OSAtomicIncrement32Barrier(&i_);
++  }
++
++  inline void operator--() {
++    OSAtomicDecrement32Barrier(&i_);
++  }
++};
++
++} // namespace essentia
++
++
++#else
+ 
+ 
+ #include <ext/atomicity.h>
