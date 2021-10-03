@@ -75,8 +75,7 @@ jobs:
     steps:
     - name: Set version
       run: |
-        TAG=${GITHUB_REF##*/}
-        echo "::set-env name=VERSION::$(echo $TAG | sed 's/^v//')"
+        echo "::set-env name=VERSION::${GITHUB_REF##*/}"
     - uses: actions/download-artifact@v2
       with:
         name: essentia-extractor-${{ env.VERSION }}-macos
