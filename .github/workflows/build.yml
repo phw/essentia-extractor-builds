@@ -78,12 +78,12 @@ jobs:
         echo "VERSION=${GITHUB_REF##*/}" >> $GITHUB_ENV
     - uses: actions/download-artifact@v2
       with:
-        name: essentia-extractor-${{ env.VERSION }}-macos
-        path: artifacts/
+        name: essentia-extractor-macOS
+        path: artifacts/essentia-extractor-${{ env.VERSION }}-macos/
     - uses: actions/download-artifact@v2
       with:
-        name: essentia-extractor-${{ env.VERSION }}-linux
-        path: artifacts/
+        name: essentia-extractor-Linux
+        path: artifacts/essentia-extractor-${{ env.VERSION }}-linux/
     - name: Generate checksums
       run: |
         cd artifacts
@@ -96,6 +96,7 @@ jobs:
         for dir in $dirs
         do
           name=$(basename $dir)
+          chmod +x $dir/streaming_extractor_music
           tar cvzf release/$name.tar.gz $dir
         done
     - name: Create release
