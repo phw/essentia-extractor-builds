@@ -73,21 +73,35 @@ jobs:
     needs:
       - build
     steps:
+    - name: Set version
+      run: |
+        TAG=${GITHUB_REF##*/}
+        echo "::set-env name=VERSION::$(echo $TAG | sed 's/^v//')"
     - uses: actions/download-artifact@v2
       with:
-        name: essentia-extractor-macOS
+        name: essentia-extractor-${{ env.VERSION }}-macos
         path: artifacts/
     - uses: actions/download-artifact@v2
       with:
-        name: essentia-extractor-Linux
+        name: essentia-extractor-${{ env.VERSION }}-linux
         path: artifacts/
     - name: Generate checksums
       run: |
         cd artifacts
         sha256sum * > SHA256SUMS
+    - name: Make tarballs
+      run: |
+        mkdir artifacts/release/
+        cd artifacts/
+        dirs=$(find . -name 'essentia-extractor-*' -type d)
+        for dir in $dirs
+        do
+          name=$(basename $dir)
+          tar cvzf release/$name.tar.gz $dir
+        done
     - name: Create release
       uses: softprops/action-gh-release@v1
       with:
-        files: artifacts/*
+        files: artifacts/release/*
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
