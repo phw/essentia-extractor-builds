@@ -84,10 +84,6 @@ jobs:
       with:
         name: essentia-extractor-Linux
         path: artifacts/essentia-extractor-${{ env.VERSION }}-linux/
-    - name: Generate checksums
-      run: |
-        cd artifacts
-        sha256sum * > SHA256SUMS
     - name: Make tarballs
       run: |
         mkdir artifacts/release/
@@ -99,6 +95,10 @@ jobs:
           chmod +x $dir/streaming_extractor_music
           tar cvzf release/$name.tar.gz $dir
         done
+    - name: Generate checksums
+      run: |
+        cd artifacts/release
+        sha256sum * > SHA256SUMS
     - name: Create release
       uses: softprops/action-gh-release@v1
       with:
